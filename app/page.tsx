@@ -43,42 +43,60 @@ export default function Home() {
         {/* Features Section */}
         <section className="border-t bg-white py-24">
           <div className="container mx-auto px-4">
-            <div className="grid gap-12 md:grid-cols-3">
-              <div className="flex flex-col">
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <Briefcase className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="mb-3 text-2xl font-semibold text-black">
-                  Organize Applications
-                </h3>
-                <p className="text-muted-foreground">
-                  Create custom boards and columns to track your job
-                  applications at every stage of the process.
-                </p>
+            <div className="mx-auto max-w-6xl">
+              {/* Section heading */}
+              <div className="mx-auto mb-16 max-w-2xl text-center">
+                <span className="mb-3 inline-block rounded-full bg-violet-100 px-4 py-1 text-sm font-medium text-violet-500">
+                  Why teams choose us
+                </span>
+                <h2 className="text-3xl font-semibold text-black md:text-4xl">
+                  Everything you need to land the job
+                </h2>
               </div>
-              <div className="flex flex-col">
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <TrendingUp className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="mb-3 text-2xl font-semibold text-black">
-                  Track Progress
-                </h3>
-                <p className="text-muted-foreground">
-                  Monitor your application status from applied to interview to
-                  offer with visual Kanban boards.
-                </p>
-              </div>
-              <div className="flex flex-col">
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                  <CheckCircle2 className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="mb-3 text-2xl font-semibold text-black">
-                  Stay Organized
-                </h3>
-                <p className="text-muted-foreground">
-                  Never lose track of an application. Keep all your job search
-                  information in one centralized place.
-                </p>
+
+              {/* Feature cards */}
+              <div className="relative grid gap-8 md:grid-cols-3">
+                {/* Connecting line for desktop */}
+                <div className="absolute left-0 right-0 top-6 hidden h-px bg-violet-100 md:block" />
+
+                {[
+                  {
+                    icon: Briefcase,
+                    step: "01",
+                    title: "Organize Applications",
+                    desc: "Create custom boards and columns to track your job applications at every stage of the process.",
+                  },
+                  {
+                    icon: TrendingUp,
+                    step: "02",
+                    title: "Track Progress",
+                    desc: "Monitor your application status from applied to interview to offer with visual Kanban boards.",
+                  },
+                  {
+                    icon: CheckCircle2,
+                    step: "03",
+                    title: "Stay Organized",
+                    desc: "Never lose track of an application. Keep all your job search information in one centralized place.",
+                  },
+                ].map((feature, idx) => (
+                  <div
+                    key={idx}
+                    className="group relative rounded-lg border border-gray-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-xl"
+                  >
+                    <div className="mb-6 flex items-center justify-between">
+                      <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-violet-400 transition-colors duration-300 group-hover:bg-violet-500">
+                        <feature.icon className="h-6 w-6 text-white" />
+                      </div>
+                      <span className="text-sm font-semibold text-violet-200 transition-colors duration-300 group-hover:text-violet-400">
+                        {feature.step}
+                      </span>
+                    </div>
+                    <h3 className="mb-3 text-2xl font-semibold text-black">
+                      {feature.title}
+                    </h3>
+                    <p className="text-muted-foreground">{feature.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
