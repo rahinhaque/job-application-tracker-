@@ -11,27 +11,27 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-white">
       <main className="flex-1">
         {/* Hero section */}
-        <section className="container mx-auto px-4 py-32">
+        <section className="container mx-auto px-4 py-16 sm:py-20 md:py-24 lg:py-32">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-black mb-6 text-6xl font-bold">
+            <h1 className="text-black mb-4 sm:mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
               <span className="text-violet-400">A better way</span> to track
               your job applications
             </h1>
-            <p className="text-gray-600 mb-10 text-xl">
+            <p className="text-gray-600 mb-6 sm:mb-8 md:mb-10 text-base sm:text-lg md:text-xl px-2 sm:px-0">
               Track and manage your job searches with ease.
             </p>
-            <div className="flex flex-col items-center gap-4">
-              <Link href="/sign-up">
+            <div className="flex flex-col items-center gap-3 sm:gap-4">
+              <Link href="/sign-up" className="w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="px-8 h-12 text-lg font-medium bg-violet-400"
+                  className="px-6 sm:px-8 h-10 sm:h-12 text-base sm:text-lg font-medium bg-violet-400 w-full sm:w-auto"
                 >
-                  Start for free <ArrowRight className="ml-2" />
+                  Start for free <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </Link>
 
-              <p className="text-gray-600 text-sm">
-                Free forver, no credit card required
+              <p className="text-gray-600 text-xs sm:text-sm">
+                Free forever, no credit card required
               </p>
             </div>
           </div>

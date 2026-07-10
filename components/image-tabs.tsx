@@ -55,6 +55,7 @@ const ImageTabs = () => {
                 alt="Hero image 1"
                 width={1200}
                 height={800}
+                className="w-full h-auto object-cover"
               />
             )}
 
@@ -64,6 +65,7 @@ const ImageTabs = () => {
                 alt="Hero image 2"
                 width={1200}
                 height={800}
+                className="w-full h-auto object-cover"
               />
             )}
 
@@ -73,6 +75,7 @@ const ImageTabs = () => {
                 alt="Hero image 3"
                 width={1200}
                 height={800}
+                className="w-full h-auto object-cover"
               />
             )}
           </div>
