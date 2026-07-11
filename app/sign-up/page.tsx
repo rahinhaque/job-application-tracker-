@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Briefcase, CheckCircle2, TrendingUp } from "lucide-react";
@@ -12,12 +13,48 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { signUp } from "@/lib/auth/auth-client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const result = await signUp.email({
+        name,
+        email,
+        password,
+      });
+      if (result.error) {
+        setError(result.error.message ?? "Failed to create an account.");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch {
+      setError("Failed to create an account. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(139,92,246,0.18),_transparent_35%),linear-gradient(to_bottom_right,_#faf5ff,_#ffffff,_#eef2ff)]">
       <div className="grid min-h-screen lg:grid-cols-2">
-{/* Illustration panel */}
+        {/* Illustration panel */}
         <div className="relative hidden overflow-hidden bg-gradient-to-br from-violet-600 via-violet-500 to-indigo-600 lg:flex">
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-15" />
           <div className="absolute -left-24 top-20 h-72 w-72 rounded-full bg-white/20 blur-3xl" />
@@ -44,7 +81,9 @@ export default function SignUpPage() {
               <div className="rounded-3xl border border-white/20 bg-white/10 p-4 sm:p-6 shadow-2xl backdrop-blur-xl">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
-                    <p className="text-xs sm:text-sm text-white/70">Applications</p>
+                    <p className="text-xs sm:text-sm text-white/70">
+                      Applications
+                    </p>
                     <p className="text-xl sm:text-2xl font-semibold">24</p>
                   </div>
                   <div className="rounded-2xl bg-white/15 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm">
@@ -62,7 +101,9 @@ export default function SignUpPage() {
                       key={item.title}
                       className="rounded-2xl bg-white/10 p-3 sm:p-4 text-center backdrop-blur"
                     >
-                      <p className="text-xs sm:text-sm text-white/70">{item.title}</p>
+                      <p className="text-xs sm:text-sm text-white/70">
+                        {item.title}
+                      </p>
                       <p className="mt-1 text-lg sm:text-2xl font-semibold">
                         {item.value}
                       </p>
@@ -95,12 +136,19 @@ export default function SignUpPage() {
               </CardHeader>
 
               <CardContent>
-                <form className="space-y-5">
+                {error && (
+                  <div className="flex items-center justify-center">
+                    <p className="text-sm text-red-500">{error}</p>
+                  </div>
+                )}
+                <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="space-y-2">
                     <Label htmlFor="name">Name</Label>
                     <Input
                       id="name"
                       type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       placeholder="John Doe"
                       className="h-11 bg-white"
                     />
@@ -111,6 +159,8 @@ export default function SignUpPage() {
                     <Input
                       id="email"
                       type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       placeholder="john.doe@example.com"
                       className="h-11 bg-white"
                     />
@@ -121,13 +171,19 @@ export default function SignUpPage() {
                     <Input
                       id="password"
                       type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter your password"
                       className="h-11 bg-white"
                     />
                   </div>
 
-                  <Button className="h-11 w-full bg-violet-600 text-base font-medium hover:bg-violet-700">
-                    Sign up
+                  <Button
+                    type="submit"
+                    className="h-11 w-full bg-violet-600 text-base font-medium hover:bg-violet-700"
+                    disabled={loading}
+                  >
+                    {loading ? "Signing up..." : "Sign up"}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </form>

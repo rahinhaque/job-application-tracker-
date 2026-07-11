@@ -5,11 +5,9 @@ import { MongoClient } from "mongodb";
 const client = new MongoClient(process.env.MONGODB_URI as string);
 const db = client.db("job_tracker_app");
 
+client.connect().catch(console.error);
+
 export const auth = betterAuth({
-   database: mongodbAdapter(db,  {
-      client
-   }),
-   emailAndPassword: {
-      enabled: true,
-   }
-})
+  database: mongodbAdapter(db, { client }),
+  emailAndPassword: { enabled: true },
+});

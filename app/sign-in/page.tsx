@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { ArrowRight, Briefcase, CheckCircle2, TrendingUp } from "lucide-react";
 
@@ -11,8 +12,41 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "@/lib/auth/auth-client";
 
 export default function SignInPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const result = await signIn.email({
+        email,
+        password,
+      });
+      if (result.error) {
+        setError(result.error.message ?? "Failed to sign in.");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch {
+      setError("Failed to sign in. Please check your credentials.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(139,92,246,0.18),_transparent_35%),linear-gradient(to_bottom_right,_#faf5ff,_#ffffff,_#eef2ff)]">
       <div className="grid min-h-screen lg:grid-cols-2">
@@ -34,7 +68,8 @@ export default function SignInPage() {
               </h1>
 
               <p className="mt-4 max-w-md text-sm leading-7 text-white/80 sm:text-base">
-                Sign in to review applications, manage interviews, and keep your progress moving.
+                Sign in to review applications, manage interviews, and keep your
+                progress moving.
               </p>
             </div>
 
@@ -42,7 +77,9 @@ export default function SignInPage() {
               <div className="rounded-3xl border border-white/20 bg-white/10 p-4 shadow-2xl backdrop-blur-xl sm:p-6">
                 <div className="mb-4 flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-white/70 sm:text-sm">Interview progress</p>
+                    <p className="text-xs text-white/70 sm:text-sm">
+                      Interview progress
+                    </p>
                     <p className="text-xl font-semibold sm:text-2xl">76%</p>
                   </div>
                   <div className="rounded-2xl bg-white/15 px-3 py-1.5 text-xs sm:px-4 sm:py-2 sm:text-sm">
@@ -60,7 +97,9 @@ export default function SignInPage() {
                       key={item.title}
                       className="rounded-2xl bg-white/10 p-3 text-center backdrop-blur sm:p-4"
                     >
-                      <p className="text-xs text-white/70 sm:text-sm">{item.title}</p>
+                      <p className="text-xs text-white/70 sm:text-sm">
+                        {item.title}
+                      </p>
                       <p className="mt-1 text-lg font-semibold sm:text-2xl">
                         {item.value}
                       </p>
@@ -93,12 +132,14 @@ export default function SignInPage() {
               </CardHeader>
 
               <CardContent>
-                <form className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="space-y-2">
                     <Label htmlFor="email">Email</Label>
                     <Input
                       id="email"
                       type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       placeholder="john.doe@example.com"
                       className="h-11 bg-white"
                     />
@@ -109,6 +150,8 @@ export default function SignInPage() {
                     <Input
                       id="password"
                       type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter your password"
                       className="h-11 bg-white"
                     />
@@ -123,15 +166,22 @@ export default function SignInPage() {
                     </Link>
                   </div>
 
-                  <Button className="h-11 w-full bg-violet-600 text-base font-medium hover:bg-violet-700">
-                    Sign in
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="h-11 w-full bg-violet-600 text-base font-medium hover:bg-violet-700"
+                  >
+                    {loading ? "Signing in..." : "Sign in"}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </form>
 
                 <p className="mt-6 text-center text-sm text-gray-600">
                   Don&apos;t have an account?{" "}
-                  <Link href="/sign-up" className="font-medium text-violet-600 hover:underline">
+                  <Link
+                    href="/sign-up"
+                    className="font-medium text-violet-600 hover:underline"
+                  >
                     Sign up
                   </Link>
                 </p>
