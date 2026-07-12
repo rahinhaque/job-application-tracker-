@@ -1,4 +1,9 @@
+import ComparisonSection from "@/components/ComparisonSection";
+import FinalCtaSection from "@/components/FinalCTABand";
 import ImageTabs from "@/components/image-tabs";
+import IntegrationsSection from "@/components/IntegrationsSection";
+import PricingSection from "@/components/Pricing";
+import TestimonialsSection from "@/components/testimonials";
 import { Button } from "@/components/ui/button";
 
 // import Image from "next/image";
@@ -26,7 +31,8 @@ export default function Home() {
                   size="lg"
                   className="px-6 sm:px-8 h-10 sm:h-12 text-base sm:text-lg font-medium bg-violet-400 w-full sm:w-auto"
                 >
-                  Start for free <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+                  Start for free{" "}
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </Link>
 
@@ -101,6 +107,21 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Peoples review section */}
+        <TestimonialsSection />
+
+        {/* Works with section */}
+        <IntegrationsSection />
+
+        {/* Comparison */}
+        <ComparisonSection />
+
+        {/* Pricing */}
+        <PricingSection />
+
+        {/* Final cta band */}
+        <FinalCtaSection />
       </main>
     </div>
   );
