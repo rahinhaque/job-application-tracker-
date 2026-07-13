@@ -1,0 +1,130 @@
+"use client";
+
+import { Board, Column } from "@/lib/models/models.types";
+import {
+  Award,
+  Calendar,
+  CheckCircle2,
+  Mic,
+  MoreHorizontal,
+  MoreVertical,
+  Trash2,
+  Trash2Icon,
+  XCircle,
+} from "lucide-react";
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Button } from "./ui/button";
+import CreateJobApplicationDialogue from "./create-job-dialogue";
+
+interface KanbanBoardProps {
+  board: Board;
+  userId: string;
+}
+
+interface colConfig {
+  color: string;
+  icon: React.ReactNode;
+}
+
+const COLUMN_CONFIG: Array<colConfig> = [
+  {
+    color: "bg-cyan-500",
+    icon: <Calendar className="h-4 w-4" />,
+  },
+  {
+    color: "bg-purple-500",
+    icon: <CheckCircle2 className="h-4 w-4" />,
+  },
+  {
+    color: "bg-green-500",
+    icon: <Mic className="h-4 w-4" />,
+  },
+  {
+    color: "bg-yellow-500",
+    icon: <Award className="h-4 w-4" />,
+  },
+  {
+    color: "bg-red-500",
+    icon: <XCircle className="h-4 w-4" />,
+  },
+];
+
+function DroppableColumn({
+  column,
+  boardId,
+  config,
+}: {
+  column: Column;
+  config: colConfig;
+  boardId: string;
+}) {
+  return (
+    <Card className="gap-0 overflow-hidden rounded-2xl border-0 py-0 shadow-sm ring-0">
+      <CardHeader
+        className={`${config.color} flex flex-row items-center justify-between gap-2 px-5 py-3`}
+      >
+        <div className="flex items-center gap-2 text-white">
+          {config.icon}
+          <CardTitle className="text-sm font-semibold text-white">
+            {column.name}
+          </CardTitle>
+        </div>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="h-6 w-6 text-white hover:bg-white/20 hover:text-white"
+            >
+              <MoreVertical className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem className="flex items-center gap-2 text-red-600 focus:text-red-600">
+              <Trash2Icon className="h-4 w-4" />
+              Delete Column
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </CardHeader>
+
+      <CardContent className="min-h-[400px] space-y-2 bg-gray-50/50 pt-4">
+        <CreateJobApplicationDialogue columnId={column._id} boardId={boardId} />
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
+  const columns = board.columns;
+  return (
+    <>
+      <div>
+        <div>
+          {columns.map((col, key) => {
+            const config = COLUMN_CONFIG[key] || {
+              color: "bg-gray-500",
+              icon: <MoreVertical className="h-4 w-4" />,
+            };
+            return (
+              <DroppableColumn
+                key={key}
+                config={config}
+                column={col}
+                boardId={board._id}
+              />
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+}
