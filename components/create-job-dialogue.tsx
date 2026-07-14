@@ -234,15 +234,17 @@ export default function CreateJobApplicationDialogue({
           </div>
 
           <DialogFooter className="gap-2 sm:gap-2">
-            <DialogClose asChild>
-              <Button
-                onClick={() => setOpen(false)}
-                type="button"
-                variant="outline"
-                className="h-10 rounded-lg border-gray-200 text-gray-700 hover:bg-gray-50"
-              >
-                Cancel
-              </Button>
+            <DialogClose
+              render={
+                <Button
+                  onClick={() => setOpen(false)}
+                  type="button"
+                  variant="outline"
+                  className="h-10 rounded-lg border-gray-200 text-gray-700 hover:bg-gray-50"
+                />
+              }
+            >
+              Cancel
             </DialogClose>
             <Button
               type="submit"

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Briefcase } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function FinalCtaSection() {
   return (
@@ -27,23 +27,20 @@ export default function FinalCtaSection() {
           </p>
 
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button
-              asChild
-              className="h-11 w-full bg-white px-6 text-base font-medium text-violet-700 hover:bg-white/90 sm:w-auto"
+            <Link
+              href="/sign-up"
+              className={`${buttonVariants()} h-11 w-full bg-white px-6 text-base font-medium text-violet-700 hover:bg-white/90 sm:w-auto`}
             >
-              <Link href="/sign-up">
-                Start for free
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
+              Start for free
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
 
-            <Button
-              asChild
-              variant="outline"
-              className="h-11 w-full border-white/30 bg-transparent px-6 text-base font-medium text-white hover:bg-white/10 hover:text-white sm:w-auto"
+            <Link
+              href="/sign-in"
+              className={`${buttonVariants({ variant: "outline" })} h-11 w-full border-white/30 bg-transparent px-6 text-base font-medium text-white hover:bg-white/10 hover:text-white sm:w-auto`}
             >
-              <Link href="/sign-in">Sign in</Link>
-            </Button>
+              Sign in
+            </Link>
           </div>
         </div>
       </div>

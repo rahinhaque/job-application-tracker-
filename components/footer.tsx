@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   AiOutlineFacebook,
@@ -6,8 +8,15 @@ import {
 } from "react-icons/ai";
 import { SiFiverr, SiUpwork } from "react-icons/si";
 import { HiOutlineBriefcase } from "react-icons/hi";
+import { useEffect, useState } from "react";
 
 export default function Footer() {
+  const [year, setYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   const socialLinks = [
     {
       icon: AiOutlineFacebook,
@@ -147,7 +156,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-gray-800 pt-6 md:flex-row">
           <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} Job Tracker. All rights reserved.
+            © {year || "2024"} Job Tracker. All rights reserved.
           </p>
           <p className="text-sm text-gray-500">
             Free forever, no credit card required.
