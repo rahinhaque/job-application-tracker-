@@ -8,7 +8,7 @@ import {
   Users,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -204,15 +204,13 @@ export default function AboutPage() {
         <p className="mt-4 text-base leading-7 text-gray-600">
           Start your board for free. No credit card, no clutter.
         </p>
-        <Button
-          asChild
-          className="mt-8 h-11 bg-violet-600 px-6 text-base font-medium hover:bg-violet-700"
+        <Link
+          href="/sign-up"
+          className={`${buttonVariants()} mt-8 h-11 bg-violet-600 px-6 text-base font-medium hover:bg-violet-700`}
         >
-          <Link href="/sign-up">
-            Start for free
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
-        </Button>
+          Start for free
+          <ArrowRight className="ml-2 h-4 w-4" />
+        </Link>
       </section>
     </div>
   );
