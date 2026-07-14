@@ -15,7 +15,7 @@ import {
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useState } from "react";
-import createJobApplication from "@/lib/actions/job-application";
+import { createJobApplication } from "@/lib/actions/job-application"; // ✅ named import
 
 interface CreateJobApplicationDialogueProps {
   columnId: string;
@@ -48,7 +48,6 @@ export default function CreateJobApplicationDialogue({
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log(formData);
     try {
       const result = await createJobApplication({
         ...formData,
@@ -86,7 +85,6 @@ export default function CreateJobApplicationDialogue({
 
         <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
           <div className="space-y-5">
-            {/* 1st row */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label
@@ -125,7 +123,6 @@ export default function CreateJobApplicationDialogue({
               </div>
             </div>
 
-            {/* 2nd row */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label
