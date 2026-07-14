@@ -30,11 +30,6 @@ const Navbar = async () => {
               Job Tracker
             </Link>
             <div className="flex items-center gap-4">
-              <Link href="/All-Jobs">
-                <Button variant="ghost" className="px-4 py-4">
-                  All Jobs
-                </Button>
-              </Link>
               <Link href="/dashboard">
                 <Button variant="ghost" className="px-4 py-4">
                   Dashboard

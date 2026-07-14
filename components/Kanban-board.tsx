@@ -1,6 +1,6 @@
 "use client";
 
-import { Board, Column } from "@/lib/models/models.types";
+import { Board, Column, JobApplication } from "@/lib/models/models.types";
 import {
   Award,
   Calendar,
@@ -22,6 +22,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import CreateJobApplicationDialogue from "./create-job-dialogue";
+import JobApplicationCard from "./job-application-card";
 
 interface KanbanBoardProps {
   board: Board;
@@ -60,11 +61,15 @@ function DroppableColumn({
   column,
   boardId,
   config,
+  sortedColumns,
 }: {
   column: Column;
   config: colConfig;
   boardId: string;
+  sortedColumns: Column[];
 }) {
+  const sortedJobs =
+    column.jobApplications?.sort((a, b) => a.order - b.order) || [];
   return (
     <Card className="gap-0 overflow-hidden rounded-2xl border-0 py-0 shadow-sm ring-0">
       <CardHeader
@@ -97,14 +102,40 @@ function DroppableColumn({
       </CardHeader>
 
       <CardContent className="min-h-[400px] space-y-2 bg-gray-50/50 pt-4">
+        {sortedJobs.map((job, key) => (
+          <SortableJobCard
+            key={key}
+            job={{ ...job, columnId: job.columnId || column._id }}
+            columns={sortedColumns}
+          />
+        ))}
+
         <CreateJobApplicationDialogue columnId={column._id} boardId={boardId} />
       </CardContent>
     </Card>
   );
 }
 
+function SortableJobCard({
+  job,
+  columns,
+}: {
+  job: JobApplication;
+  columns: Column[];
+}) {
+  return (
+    <div>
+      <JobApplicationCard job={job} columns={columns} />
+    </div>
+  );
+}
+
 export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
   const columns = board.columns;
+
+  const sortedColumns = columns?.sort((a, b) => a.order - b.order) || [];
+
+  console.log(columns[0].jobApplications);
   return (
     <>
       <div>
@@ -120,6 +151,7 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
                 config={config}
                 column={col}
                 boardId={board._id}
+                sortedColumns={sortedColumns}
               />
             );
           })}

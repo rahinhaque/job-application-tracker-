@@ -2,21 +2,38 @@ import KanbanBoard from "@/components/Kanban-board";
 import { getSession } from "@/lib/auth/auth";
 import connectDB from "@/lib/db";
 import { Board } from "@/lib/models";
-import React from "react";
+import React, { Suspense } from "react";
 
-const Dashboard = async () => {
-  const session = await getSession();
-
+const getBoard = async (userId: string) => {
   await connectDB();
 
-  const board = await Board.findOne({
-    userId: session?.user?.id,
+  const boardDoc = await Board.findOne({
+    userId: userId,
     name: "Job Hunt",
   }).populate({
     path: "columns",
+    populate: {
+      path: "jobApplications",
+    },
   });
 
-  console.log(board);
+  if (!boardDoc) return null;
+
+  return JSON.parse(JSON.stringify(boardDoc));
+};
+
+const DashboardPageWrapper = async () => {
+  const session = await getSession();
+
+  const board = await getBoard(session?.user?.id || "");
+
+  if (!board) {
+    return (
+      <div className="min-h-screen bg-white p-6">
+        <p className="text-gray-600">No board found.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -25,13 +42,17 @@ const Dashboard = async () => {
           <h1 className="text-3xl font-bold text-black">{board.name}</h1>
           <p className="text-gray-600">Tract your job applications</p>
         </div>
-        {/* The kanban board here */}
-        <KanbanBoard
-          board={JSON.parse(JSON.stringify(board))}
-          userId={session?.user?.id}
-        />
+        <KanbanBoard board={board} userId={session?.user?.id} />
       </div>
     </div>
+  );
+};
+
+const Dashboard = async () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DashboardPageWrapper />
+    </Suspense>
   );
 };
 

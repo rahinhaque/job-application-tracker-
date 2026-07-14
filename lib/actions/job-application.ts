@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { getSession } from "../auth/auth";
 import connectDB from "../db";
 import { Board, Column, JobApplication } from "../models";
@@ -39,13 +40,12 @@ export default async function createJobApplication(data: JobApplicationData) {
     description,
     columnId,
     boardId,
-    userId,
   } = data;
 
   if (!company || !position || !columnId || !boardId)
     return { error: "Missing required fields." };
 
-  //Verify board ownership
+  // Verify board ownership
   const board = await Board.findOne({
     _id: boardId,
     userId: session.user.id,
@@ -54,20 +54,19 @@ export default async function createJobApplication(data: JobApplicationData) {
     return { error: "You do not own this board." };
   }
 
-  //veerify the columns belongs to the board.
+  // Verify the column belongs to the board
   const column = await Column.findOne({
     _id: columnId,
     boardId: boardId,
   });
-  if (!Column) {
+  if (!column) {
     return { error: "Column does not belong to this board." };
   }
 
-  const maxOrder =
-    ((await JobApplication.findOne({ columnId })
-      .sort({ order: -1 })
-      .select("order")
-      .lean()) as { order: number }) || null;
+  const maxOrder = (await JobApplication.findOne({ columnId })
+    .sort({ order: -1 })
+    .select("order")
+    .lean()) as { order: number } | null;
 
   const jobApplication = await JobApplication.create({
     company,
@@ -85,9 +84,12 @@ export default async function createJobApplication(data: JobApplicationData) {
     order: maxOrder ? maxOrder.order + 1 : 0,
   });
 
-  await Column.findOneAndUpdate(columnId, {
-    $push: { jobApplications: jobApplication._id },
-  });
+  await Column.findOneAndUpdate(
+    { _id: columnId },
+    { $push: { jobApplications: jobApplication._id } },
+  );
+
+  revalidatePath("/dashboard");
 
   return { data: JSON.parse(JSON.stringify(jobApplication)) };
 }
