@@ -12,7 +12,7 @@ const ImageTabs = () => {
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-6xl">
           {/* Tabs */}
-          <div className="flex gap-2 justify-center mb-8">
+          <div className="flex flex-wrap gap-2 justify-center mb-8">
             <Button
               onClick={() => setActiveTab("oraganize")}
               variant="outline"

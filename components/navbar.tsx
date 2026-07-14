@@ -4,32 +4,29 @@ import React from "react";
 import { Button } from "./ui/button";
 import { getSession } from "@/lib/auth/auth";
 import LogoutButton from "./LogoutButton";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "./ui/avatar";
+import MobileMenu from "./mobile-menu";
 
 const Navbar = async () => {
   const session = await getSession();
-  // console.log("Session in Navbar:", session);
 
   return (
-    <nav className="border-b border-gray-200 bg-white">
+    <nav className="border-b border-gray-200 bg-white relative">
       <div className="container mx-auto flex h-16 items-center px-4 justify-between">
-        {session?.user ? (
-          <>
-            <Link
-              href="/"
-              className="flex items-center gap-2 space-x-2 text-xl font-semibold text-pretty text-violet-400"
-            >
-              <Briefcase />
-              Job Tracker
-            </Link>
-            <div className="flex items-center gap-4">
+        <Link
+          href="/"
+          className="flex items-center gap-2 space-x-2 text-xl font-semibold text-pretty text-violet-400"
+        >
+          <Briefcase />
+          <span className="hidden sm:inline">Job Tracker</span>
+        </Link>
+        
+        {/* Mobile Menu */}
+        <MobileMenu session={session} logoutAction={<LogoutButton />} />
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-4">
+          {session?.user ? (
+            <>
               <Link href="/dashboard">
                 <Button variant="ghost" className="px-4 py-4">
                   Dashboard
@@ -51,57 +48,22 @@ const Navbar = async () => {
                 </Button>
               </Link>
               <LogoutButton />
-              {/* <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Button variant="ghost">
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-violet-400 text-white">
-                        {session.user.name[0].toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>
-                    <div>
-                      <p>{session.user.name}</p>
-                      <p className="text-sm text-gray-500">
-                        {session.user.email}
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
-
-                  <DropdownMenuItem>
-                    <LogoutButton />
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu> */}
-            </div>
-          </>
-        ) : (
-          <>
-            <Link
-              href="/"
-              className="flex items-center gap-2 space-x-2 text-xl font-semibold text-pretty text-violet-400"
-            >
-              <Briefcase />
-              Job Tracker
-            </Link>
-            <div className="flex items-center gap-4">
+            </>
+          ) : (
+            <>
               <Link href="/sign-in">
                 <Button variant="ghost" className="px-4 py-4 ">
                   Login
                 </Button>
               </Link>
               <Link href="/sign-up">
-                <Button className="px-4 py-4 bg-violet-400 hover:bg-violet-400/80">
+                <Button className="px-4 py-4 bg-violet-400 hover:bg-violet-400/80 text-white">
                   Start for free
                 </Button>
               </Link>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </div>
     </nav>
   );

@@ -47,11 +47,11 @@ export default function Home() {
         <ImageTabs />
 
         {/* Features Section */}
-        <section className="border-t bg-white py-24">
+        <section className="border-t bg-white py-16 sm:py-24">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-6xl">
               {/* Section heading */}
-              <div className="mx-auto mb-16 max-w-2xl text-center">
+              <div className="mx-auto mb-10 sm:mb-16 max-w-2xl text-center">
                 <span className="mb-3 inline-block rounded-full bg-violet-100 px-4 py-1 text-sm font-medium text-violet-500">
                   Why teams choose us
                 </span>
