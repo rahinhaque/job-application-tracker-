@@ -1,4 +1,5 @@
 import KanbanBoard from "@/components/Kanban-board";
+import { Spinner } from "@/components/ui/spinner";
 import { getSession } from "@/lib/auth/auth";
 import connectDB from "@/lib/db";
 import { Board } from "@/lib/models";
@@ -48,9 +49,15 @@ const DashboardPageWrapper = async () => {
   );
 };
 
+const DashboardFallback = () => (
+  <div className="flex min-h-screen items-center justify-center bg-white">
+    <Spinner className="size-10 text-gray-500" />
+  </div>
+);
+
 const Dashboard = async () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<DashboardFallback />}>
       <DashboardPageWrapper />
     </Suspense>
   );
